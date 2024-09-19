@@ -4,7 +4,7 @@ JavaScript tool for downloading files from Google Drive and data from AirTable.
 
 ## Google Drive Integration
 
-### How does it work?
+### How to set up the project?
 
 - Create your ```Google Cloud Project```.
 - Enable the Google Drive API.
