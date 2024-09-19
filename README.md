@@ -14,7 +14,7 @@ JavaScript tool for downloading files from Google Drive and data from AirTable.
 
 ### How to run the script?
 
-- Run ```node index```
+- Run ```node gdrive```
 
 ### Sample code for getting a list of files and folders
 
