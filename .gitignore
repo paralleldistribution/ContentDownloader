@@ -1,0 +1,9 @@
+# dependencies
+node_modules
+
+# credentials
+credentials.json
+token.json
+
+# others
+.DS_Store
