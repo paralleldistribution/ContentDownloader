@@ -10,7 +10,7 @@ JavaScript tool for downloading files from Google Drive and data from AirTable.
 - Enable the Google Drive API.
 - Create an Auth 2.0 credential.
 - Download that JSON file.
-- Locate that JSON file in the repo and rename it 'credentials.json'
+- Locate that JSON file in the repo and rename it to ```credentials.json```.
 - Run ```node index```
 
 ## Sample code for getting a list of files and folders
