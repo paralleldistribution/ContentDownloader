@@ -11,30 +11,33 @@ JavaScript tool for downloading files from Google Drive and data from AirTable.
 - Create an Auth 2.0 credential.
 - Download that JSON file.
 - Locate that JSON file in the repository and rename it to ```credentials.json```.
+
+### How to run the script?
+
 - Run ```node index```
 
-## Sample code for getting a list of files and folders
+### Sample code for getting a list of files and folders
 
 ```javascript
   const auth = await authorize()
   const data = await getList(auth)
 ```
 
-## Sample code for getting a list of folders
+### Sample code for getting a list of folders
 
 ```javascript
   const auth = await authorize()
   const data = await getFolderList(auth)
 ```
 
-## Sample code for getting a folder content
+### Sample code for getting a folder content
 
 ```javascript
   const auth = await authorize()
   const data = await getFolderContent(auth, folderID)
 ```
 
-## Sample code for downloading a file
+### Sample code for downloading a file
 
 ```javascript
   const auth = await authorize()
