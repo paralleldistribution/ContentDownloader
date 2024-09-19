@@ -15,6 +15,10 @@ JavaScript tool for downloading files from Google Drive and data from AirTable.
 ### How to run the script?
 
 - Run ```node gdrive```
+- If you don't have a token, the script will ask you browse to a URL.
+- Once you browse to that URL, you will be redirected to ```google.com```.
+- Copy that URL to which you were redirected and paste in the terminal.
+- A token will be generated and stored and the script will run.
 
 ### Sample code for getting a list of files and folders
 
