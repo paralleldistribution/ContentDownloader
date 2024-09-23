@@ -1,14 +1,58 @@
 {
   "name": "content-downloader",
   "version": "1.0.0",
-  "description": "",
+  "description": "JavaScript tool for downloading files from Google Drive and data from AirTable",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "gdrive": "node src/gdrive.js",
+    "airtable": "node src/airtable.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix",
+    "prettier": "prettier --check .",
+    "prettier:fix": "prettier --write ."
   },
-  "author": "",
+  "author": "Leonardo Javier Russo",
   "license": "ISC",
   "dependencies": {
-    "googleapis": "^144.0.0"
-  }
+    "dotenv": "^16.4.5",
+    "eslint": "8.57.0",
+    "googleapis": "^144.0.0",
+    "pre-commit": "1.2.2",
+    "prettier": "3.3.3"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": "latest"
+    },
+    "rules": {
+      "no-alert": "error",
+      "no-dupe-keys": "error",
+      "no-duplicate-case": "error",
+      "no-duplicate-imports": "error",
+      "no-empty": "error",
+      "no-tabs": "error",
+      "no-unused-expressions": "error",
+      "no-unused-vars": [
+        "error",
+        {
+          "vars": "all",
+          "args": "all",
+          "caughtErrors": "all",
+          "caughtErrorsIgnorePattern": "err",
+          "ignoreRestSiblings": false
+        }
+      ]
+    }
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "printWidth": 85,
+    "semi": false,
+    "tabWidth": 2,
+    "trailingComma": "es5"
+  },
+  "pre-commit": [
+    "lint",
+    "prettier"
+  ]
 }

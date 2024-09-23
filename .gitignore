@@ -7,3 +7,6 @@ token.json
 
 # others
 .DS_Store
+
+# environment variables
+.env
