@@ -4,6 +4,7 @@
   "description": "JavaScript tool for downloading files from Google Drive and data from AirTable",
   "main": "index.js",
   "scripts": {
+    "start": "node src/main.js",
     "gdrive": "node src/gdrive.js",
     "airtable": "node src/airtable.js",
     "lint": "eslint .",
