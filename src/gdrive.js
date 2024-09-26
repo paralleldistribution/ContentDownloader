@@ -135,45 +135,54 @@ const downloadFile = (auth, fileId, dest) => {
   )
 }
 
-const test1 = async () => {
-  console.log("getting a list of files and folders")
-  const auth = await authorize()
-  await getList(auth)
-}
+// const test1 = async () => {
+//   console.log("getting a list of files and folders")
+//   const auth = await authorize()
+//   await getList(auth)
+// }
 
-const test2 = async () => {
-  console.log("getting a list of folders")
-  const auth = await authorize()
-  await getFolderList(auth)
-}
+// const test2 = async () => {
+//   console.log("getting a list of folders")
+//   const auth = await authorize()
+//   await getFolderList(auth)
+// }
 
-const test3 = async (folderID) => {
-  console.log("getting the folder content")
-  const auth = await authorize()
-  await getFolderContent(auth, folderID)
-}
+// const test3 = async (folderID) => {
+//   console.log("getting the folder content")
+//   const auth = await authorize()
+//   await getFolderContent(auth, folderID)
+// }
 
-const test4 = async (fileID, filename) => {
-  console.log("downloading a file")
-  const auth = await authorize()
-  downloadFile(auth, fileID, filename)
-}
+// const test4 = async (fileID, filename) => {
+//   console.log("downloading a file")
+//   const auth = await authorize()
+//   downloadFile(auth, fileID, filename)
+// }
 
-const test5 = async (folderID) => {
-  console.log("downloading all files from a folder")
-  const auth = await authorize()
-  const data = await getFolderContent(auth, folderID)
-  for (let i = 0; i < data.length; i++) {
-    await test4(data[i].id, data[i].name)
-  }
-}
+// const test5 = async (folderID) => {
+//   console.log("downloading all files from a folder")
+//   const auth = await authorize()
+//   const data = await getFolderContent(auth, folderID)
+//   for (let i = 0; i < data.length; i++) {
+//     await test4(data[i].id, data[i].name)
+//   }
+// }
 
-const runner = async () => {
-  await test1()
-  await test2()
-  await test3("1QIJrxYm-uiPF7EPwUmgDApAkra0VGTtg")
-  await test4("1K27sPdXuiT7FeLkPefbITxOgTZGUwiwD", "samsung.pdf")
-  await test5("1QIJrxYm-uiPF7EPwUmgDApAkra0VGTtg")
-}
+// const runner = async () => {
+//   await test1()
+//   await test2()
+//   await test3("1QIJrxYm-uiPF7EPwUmgDApAkra0VGTtg")
+//   await test4("1K27sPdXuiT7FeLkPefbITxOgTZGUwiwD", "samsung.pdf")
+//   await test5("1QIJrxYm-uiPF7EPwUmgDApAkra0VGTtg")
+// }
 
-runner()
+// runner()
+
+module.exports = {
+  authorize,
+  getList,
+  getFolderList,
+  getFolderContent,
+  driveQuery,
+  downloadFile,
+}
