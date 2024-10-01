@@ -10,3 +10,6 @@ token.json
 
 # environment variables
 .env
+
+# service account
+service-account.json

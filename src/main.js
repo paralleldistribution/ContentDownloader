@@ -3,7 +3,7 @@ const fs = require("fs")
 const path = require("path")
 
 const { authorize, downloadFile, getFolderContent } = require("./gdrive")
-const { getLatestRecords } = require("./airtable")
+const { getNextRecord } = require("./airtable")
 
 const extractFileIdFromUrl = (url) => {
   const fileMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/)
@@ -32,10 +32,10 @@ const saveInfoAsJson = (files, record, folderPath) => {
   })
 }
 
-const downloadLatestImagesAndSaveToJson = async (clientName) => {
+const downloadLatestImagesAndSaveToJson = async (clientName, tiktokHandle) => {
   try {
     const auth = await authorize()
-    const records = await getLatestRecords(clientName)
+    const records = await getNextRecord(clientName, tiktokHandle)
     var files = []
     for (const record of [records[0]]) {
       const driveUrl = record.fields["Slides Drive URL"]

@@ -1,71 +1,21 @@
-const { readFileSync, writeFileSync, createWriteStream } = require("fs")
-const readline = require("readline")
+const { createWriteStream } = require("fs")
 const { google } = require("googleapis")
-
-const loadFile = (file) => {
-  try {
-    return JSON.parse(readFileSync(file))
-  } catch (err) {
-    return null
-  }
-}
-
-const generateToken = async (oAuth2Client) => {
-  const authUrl = oAuth2Client.generateAuthUrl({
-    access_type: "offline",
-    scope: [
-      "https://www.googleapis.com/auth/drive.readonly",
-      "https://www.googleapis.com/auth/drive.metadata.readonly",
-    ],
-  })
-
-  console.log("Authorize this app by visiting this url:\n")
-  console.log(authUrl + "\n")
-
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  })
-
-  return new Promise((resolve, reject) => {
-    rl.question("Copy and paste the redirect URL here: ", (url_string) => {
-      rl.close()
-
-      const url = new URL(url_string)
-      const code = url.searchParams.get("code")
-
-      oAuth2Client.getToken(code, (err, token) => {
-        if (err) {
-          return reject("Error retrieving access token", err)
-        }
-
-        oAuth2Client.setCredentials(token)
-        writeFileSync("token.json", JSON.stringify(token))
-        resolve(oAuth2Client)
-      })
-    })
-  })
-}
+const { JWT } = require("google-auth-library")
 
 const authorize = async () => {
-  const credentials = loadFile("credentials.json")
-  const { client_secret, client_id } = credentials.web
-  const oAuth2Client = new google.auth.OAuth2(
-    client_id,
-    client_secret,
-    "https://www.google.com"
-  )
-
+  const credentials = require("../service-account.json")
+  const client = new JWT({
+    email: credentials.client_email,
+    key: credentials.private_key,
+    scopes: ["https://www.googleapis.com/auth/drive"],
+  })
   try {
-    const token = loadFile("token.json")
-    if (!token) {
-      return generateToken(oAuth2Client)
-    }
-    oAuth2Client.setCredentials(token)
-
-    return oAuth2Client
-  } catch (err) {
-    return generateToken(oAuth2Client)
+    await client.authorize()
+    console.log("Authentication successful")
+    return client
+  } catch (error) {
+    console.error("Authentication failed:", error.message)
+    throw error
   }
 }
 

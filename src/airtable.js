@@ -1,6 +1,8 @@
 require("dotenv").config()
 
-const token = process.env.AIRTABLE_TOKEN || ""
+const token =
+  process.env.AIRTABLE_TOKEN ||
+  "patkhpCdUiP3Wnv0I.2b269a0280d0af2a2bd935fe8d42b1e9e6da57161d075d980345a749dd117356"
 
 const downloadData = async (url = "") => {
   const requestOptions = {
@@ -10,7 +12,6 @@ const downloadData = async (url = "") => {
   }
   const response = await fetch(url, requestOptions)
   const data = await response.json()
-  console.log(data)
   return data
 }
 
@@ -28,16 +29,14 @@ const getBaseAndTable = (client) => {
   }
 }
 
-const getLatestRecords = async (clientName, limit = 10) => {
+const getNextRecord = async (clientName, tiktokHandle) => {
   const { baseId, tableName } = getBaseAndTable(clientName)
-  const formula = `AND(RECORD_ID() != '', CREATED_TIME() != '', {Slides Drive URL} != '')` // Ensure we get valid records
-  const url = `https://api.airtable.com/v0/${baseId}/${tableName}?maxRecords=${limit}&filterByFormula=${encodeURIComponent(formula)}`
-
+  const formula = `AND(RECORD_ID() != '', CREATED_TIME() != '', {Slides Drive URL} != '', {TikTok @handle} == '${tiktokHandle}')` // Ensure we get valid records
+  const url = `https://api.airtable.com/v0/${baseId}/${tableName}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`
   const data = await downloadData(url)
-
   return data.records
 }
 
 module.exports = {
-  getLatestRecords,
+  getNextRecord,
 }
