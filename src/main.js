@@ -22,7 +22,7 @@ const saveInfoAsJson = (files, record, folderPath) => {
     device: record.fields["Device"],
   }
 
-  const filePath = path.join(folderPath, "slideshow_" + record.id + ".json")
+  const filePath = path.join(folderPath, "post.json") // "slideshow_" + record.id + ".json")
   fs.writeFile(filePath, JSON.stringify(taskObject, null, 2), (err) => {
     if (err) {
       console.error("Error saving files to JSON:", err)
@@ -43,15 +43,18 @@ const downloadLatestImagesAndSaveToJson = async (clientName, tiktokHandle) => {
         const folderId = extractFileIdFromUrl(driveUrl)
         if (folderId) {
           const folderContents = await getFolderContent(auth, folderId)
+          const recordFolder = "../AndroidAgent/"
+          /*
           const recordFolder = path.join(__dirname, record.id)
           if (!fs.existsSync(recordFolder)) {
             fs.mkdirSync(recordFolder, { recursive: true })
           }
+          */
 
           for (const file of folderContents) {
             const fileName = `${file.name}`
             const filePath = path.join(recordFolder, fileName)
-            await downloadFile(auth, file.id, filePath)
+            downloadFile(auth, file.id, filePath)
             files.push(fileName)
           }
           saveInfoAsJson(files, record, recordFolder)
@@ -67,15 +70,16 @@ const downloadLatestImagesAndSaveToJson = async (clientName, tiktokHandle) => {
   }
 }
 
-function main(clientName) {
+const main = (clientName, tiktokHandle) => {
   if (!clientName) {
     console.error("Usage: node main.js <clientName> (gruns or mro)")
     process.exit(1)
   }
-  downloadLatestImagesAndSaveToJson(clientName, "@groomNgrow")
+  downloadLatestImagesAndSaveToJson(clientName, tiktokHandle)
 }
 
 const args = process.argv.slice(2)
 const clientName = args[0]
+const tiktokHandle = args[1]
 
-main(clientName)
+main(clientName, tiktokHandle)
