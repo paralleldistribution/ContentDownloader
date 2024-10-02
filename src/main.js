@@ -72,7 +72,7 @@ function main(clientName) {
     console.error("Usage: node main.js <clientName> (gruns or mro)")
     process.exit(1)
   }
-  downloadLatestImagesAndSaveToJson(clientName)
+  downloadLatestImagesAndSaveToJson(clientName, "@groomNgrow")
 }
 
 const args = process.argv.slice(2)

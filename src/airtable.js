@@ -31,9 +31,11 @@ const getBaseAndTable = (client) => {
 
 const getNextRecord = async (clientName, tiktokHandle) => {
   const { baseId, tableName } = getBaseAndTable(clientName)
-  const formula = `AND(RECORD_ID() != '', CREATED_TIME() != '', {Slides Drive URL} != '', {TikTok @handle} == '${tiktokHandle}')` // Ensure we get valid records
+  const formula = `AND({Slides Drive URL} != '', {TikTok @handle} = '${tiktokHandle}')` // Ensure we get valid records
   const url = `https://api.airtable.com/v0/${baseId}/${tableName}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`
   const data = await downloadData(url)
+  console.log("airtable url", url)
+  console.log("airtable data", data)
   return data.records
 }
 
