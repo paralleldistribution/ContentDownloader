@@ -26,6 +26,11 @@ const getBaseAndTable = (client) => {
       baseId: "appyR6tuVD0RO2dls",
       tableName: "tblBANBVeGMS8L41c",
     }
+  } else if (client == "master") {
+    return {
+      baseId: "apptIcAWN1SuIKz54",
+      tableName: "tblLi7UlsnVrvqut6",
+    }
   }
 }
 
@@ -34,11 +39,18 @@ const getNextRecord = async (clientName, tiktokHandle) => {
   const formula = `AND({Slides Drive URL} != '', {TikTok @handle} = '${tiktokHandle}')` // Ensure we get valid records
   const url = `https://api.airtable.com/v0/${baseId}/${tableName}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`
   const data = await downloadData(url)
-  console.log("airtable url", url)
-  console.log("airtable data", data)
   return data.records
+}
+
+const getSerialNumber = async (handle) => {
+  const { baseId, tableName } = getBaseAndTable("master")
+  const formula = `{TikTok @handle} = '${handle}'` // Ensure we get valid records
+  const url = `https://api.airtable.com/v0/${baseId}/${tableName}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`
+  const data = await downloadData(url)
+  return data.records[0].fields["Serial Number"]
 }
 
 module.exports = {
   getNextRecord,
+  getSerialNumber,
 }

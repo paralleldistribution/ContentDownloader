@@ -3,7 +3,7 @@ const fs = require("fs")
 const path = require("path")
 
 const { authorize, downloadFile, getFolderContent } = require("./gdrive")
-const { getNextRecord } = require("./airtable")
+const { getNextRecord, getSerialNumber } = require("./airtable")
 
 const extractFileIdFromUrl = (url) => {
   const fileMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/)
@@ -13,13 +13,13 @@ const extractFileIdFromUrl = (url) => {
   return folderMatch ? folderMatch[1] : null
 }
 
-const saveInfoAsJson = (files, record, folderPath) => {
+const saveInfoAsJson = (files, record, serialNumber, folderPath) => {
   const taskObject = {
     files: files,
     caption: record.fields["Caption"],
     sound: record.fields["Sound"],
     account: record.fields["TikTok @handle"],
-    device: record.fields["Device"],
+    device: serialNumber,
   }
 
   const filePath = path.join(folderPath, "post.json") // "slideshow_" + record.id + ".json")
@@ -36,6 +36,8 @@ const downloadLatestImagesAndSaveToJson = async (clientName, tiktokHandle) => {
   try {
     const auth = await authorize()
     const records = await getNextRecord(clientName, tiktokHandle)
+    const serialNumber = await getSerialNumber(tiktokHandle)
+
     var files = []
     for (const record of [records[0]]) {
       const driveUrl = record.fields["Slides Drive URL"]
@@ -57,7 +59,7 @@ const downloadLatestImagesAndSaveToJson = async (clientName, tiktokHandle) => {
             downloadFile(auth, file.id, filePath)
             files.push(fileName)
           }
-          saveInfoAsJson(files, record, recordFolder)
+          saveInfoAsJson(files, record, serialNumber, recordFolder)
         } else {
           console.log(`Invalid Drive URL for record ${record.id}`)
         }
