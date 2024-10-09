@@ -13,7 +13,14 @@ const extractFileIdFromUrl = (url) => {
   return folderMatch ? folderMatch[1] : null
 }
 
-const saveInfoAsJson = (files, record, serialNumber, folderPath, clientName) => {
+const saveInfoAsJson = (
+  files,
+  record,
+  serialNumber,
+  folderPath,
+  clientName,
+  outputFileName
+) => {
   const taskObject = {
     files: files,
     caption: record.fields["Caption"],
@@ -23,7 +30,7 @@ const saveInfoAsJson = (files, record, serialNumber, folderPath, clientName) => 
     client: clientName,
   }
 
-  const filePath = path.join(folderPath, "post.json") // "slideshow_" + record.id + ".json")
+  const filePath = path.join(folderPath, outputFileName) // "slideshow_" + record.id + ".json")
   fs.writeFile(filePath, JSON.stringify(taskObject, null, 2), (err) => {
     if (err) {
       console.error("Error saving files to JSON:", err)
@@ -33,7 +40,11 @@ const saveInfoAsJson = (files, record, serialNumber, folderPath, clientName) => 
   })
 }
 
-const downloadLatestImagesAndSaveToJson = async (clientName, tiktokHandle) => {
+const downloadLatestImagesAndSaveToJson = async (
+  clientName,
+  tiktokHandle,
+  outputFileName
+) => {
   try {
     const auth = await authorize()
     const records = await getNextRecord(clientName, tiktokHandle) //gets from client airtable
@@ -60,7 +71,14 @@ const downloadLatestImagesAndSaveToJson = async (clientName, tiktokHandle) => {
             downloadFile(auth, file.id, filePath)
             files.push(fileName)
           }
-          saveInfoAsJson(files, record, serialNumber, recordFolder, clientName)
+          saveInfoAsJson(
+            files,
+            record,
+            serialNumber,
+            recordFolder,
+            clientName,
+            outputFileName
+          )
         } else {
           console.log(`Invalid Drive URL for record ${record.id}`)
         }
@@ -73,16 +91,19 @@ const downloadLatestImagesAndSaveToJson = async (clientName, tiktokHandle) => {
   }
 }
 
-const main = (clientName, tiktokHandle) => {
+const main = (clientName, tiktokHandle, outputFileName) => {
   if (!clientName) {
-    console.error("Usage: node main.js (Gruns or MaryRuthOrganics) @TikTokHandle")
+    console.error(
+      "Usage: node main.js (Gruns or MaryRuthOrganics) @tiktok_handle output_file_name.json"
+    )
     process.exit(1)
   }
-  downloadLatestImagesAndSaveToJson(clientName, tiktokHandle)
+  downloadLatestImagesAndSaveToJson(clientName, tiktokHandle, outputFileName)
 }
 
 const args = process.argv.slice(2)
 const clientName = args[0]
 const tiktokHandle = args[1]
+const outputFileName = args[2]
 
-main(clientName, tiktokHandle)
+main(clientName, tiktokHandle, outputFileName)
