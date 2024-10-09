@@ -13,13 +13,14 @@ const extractFileIdFromUrl = (url) => {
   return folderMatch ? folderMatch[1] : null
 }
 
-const saveInfoAsJson = (files, record, serialNumber, folderPath) => {
+const saveInfoAsJson = (files, record, serialNumber, folderPath, clientName) => {
   const taskObject = {
     files: files,
     caption: record.fields["Caption"],
     sound: record.fields["Sound"],
     account: record.fields["TikTok @handle"],
     device: serialNumber,
+    client: clientName,
   }
 
   const filePath = path.join(folderPath, "post.json") // "slideshow_" + record.id + ".json")
@@ -35,8 +36,8 @@ const saveInfoAsJson = (files, record, serialNumber, folderPath) => {
 const downloadLatestImagesAndSaveToJson = async (clientName, tiktokHandle) => {
   try {
     const auth = await authorize()
-    const records = await getNextRecord(clientName, tiktokHandle)
-    const serialNumber = await getSerialNumber(tiktokHandle)
+    const records = await getNextRecord(clientName, tiktokHandle) //gets from client airtable
+    const serialNumber = await getSerialNumber(tiktokHandle) //Gets from master airtable
 
     var files = []
     for (const record of [records[0]]) {
@@ -59,7 +60,7 @@ const downloadLatestImagesAndSaveToJson = async (clientName, tiktokHandle) => {
             downloadFile(auth, file.id, filePath)
             files.push(fileName)
           }
-          saveInfoAsJson(files, record, serialNumber, recordFolder)
+          saveInfoAsJson(files, record, serialNumber, recordFolder, clientName)
         } else {
           console.log(`Invalid Drive URL for record ${record.id}`)
         }
@@ -74,7 +75,7 @@ const downloadLatestImagesAndSaveToJson = async (clientName, tiktokHandle) => {
 
 const main = (clientName, tiktokHandle) => {
   if (!clientName) {
-    console.error("Usage: node main.js <clientName> (gruns or mro)")
+    console.error("Usage: node main.js (Gruns or MaryRuthOrganics) @TikTokHandle")
     process.exit(1)
   }
   downloadLatestImagesAndSaveToJson(clientName, tiktokHandle)

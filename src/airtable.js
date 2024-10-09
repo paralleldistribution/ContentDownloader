@@ -2,7 +2,7 @@ require("dotenv").config()
 
 const token =
   process.env.AIRTABLE_TOKEN ||
-  "patkhpCdUiP3Wnv0I.2b269a0280d0af2a2bd935fe8d42b1e9e6da57161d075d980345a749dd117356"
+  "patxJ0kokbjKuFD66.4b6b48b78e7d451504d3f39fcd1bc624c6095e92ace353fcd5d3bb7aab844115"
 
 const downloadData = async (url = "") => {
   const requestOptions = {
@@ -16,12 +16,12 @@ const downloadData = async (url = "") => {
 }
 
 const getBaseAndTable = (client) => {
-  if (client == "mro") {
+  if (client == "MaryRuthOrganics") {
     return {
       baseId: "apprCx0TVcBxkX4Vm",
       tableName: "tblule8kefnyEGVB6",
     }
-  } else if (client == "gruns") {
+  } else if (client == "Gruns") {
     return {
       baseId: "appyR6tuVD0RO2dls",
       tableName: "tblBANBVeGMS8L41c",
@@ -47,6 +47,8 @@ const getSerialNumber = async (handle) => {
   const formula = `{TikTok @handle} = '${handle}'` // Ensure we get valid records
   const url = `https://api.airtable.com/v0/${baseId}/${tableName}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`
   const data = await downloadData(url)
+  console.log(url)
+  console.log(data)
   return data.records[0].fields["Serial Number"]
 }
 
