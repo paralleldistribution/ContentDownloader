@@ -47,9 +47,10 @@ const getSerialNumber = async (handle) => {
   const formula = `{TikTok @handle} = '${handle}'` // Ensure we get valid records
   const url = `https://api.airtable.com/v0/${baseId}/${tableName}?maxRecords=1&filterByFormula=${encodeURIComponent(formula)}`
   const data = await downloadData(url)
-  console.log(url)
-  console.log(data)
-  return data.records[0].fields["Serial Number"]
+  return {
+    serialNumber: data.records[0].fields["Serial Number"],
+    clientName: data.records[0].fields["Client"],
+  }
 }
 
 module.exports = {
