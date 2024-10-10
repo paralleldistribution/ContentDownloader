@@ -30,7 +30,8 @@ const saveInfoAsJson = (
     client: clientName,
   }
 
-  const filePath = path.join(folderPath, outputFileName) // "slideshow_" + record.id + ".json")
+  const filePath =
+    record.fields["TikTok @handle"] + "_" + path.join(folderPath, outputFileName) // "slideshow_" + record.id + ".json")
   fs.writeFile(filePath, JSON.stringify(taskObject, null, 2), (err) => {
     if (err) {
       console.error("Error saving files to JSON:", err)
