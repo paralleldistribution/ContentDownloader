@@ -41,15 +41,11 @@ const saveInfoAsJson = (
   })
 }
 
-const downloadLatestImagesAndSaveToJson = async (
-  clientName,
-  tiktokHandle,
-  outputFileName
-) => {
+const downloadLatestImagesAndSaveToJson = async (tiktokHandle, outputFileName) => {
   try {
     const auth = await authorize()
+    const { serialNumber, clientName } = await getSerialNumber(tiktokHandle) //Gets from master airtable
     const records = await getNextRecord(clientName, tiktokHandle) //gets from client airtable
-    const serialNumber = await getSerialNumber(tiktokHandle) //Gets from master airtable
 
     var files = []
     for (const record of [records[0]]) {
@@ -92,19 +88,12 @@ const downloadLatestImagesAndSaveToJson = async (
   }
 }
 
-const main = (clientName, tiktokHandle, outputFileName) => {
-  if (!clientName) {
-    console.error(
-      "Usage: node main.js (Gruns or MaryRuthOrganics) @tiktok_handle output_file_name.json"
-    )
-    process.exit(1)
-  }
-  downloadLatestImagesAndSaveToJson(clientName, tiktokHandle, outputFileName)
+const main = (tiktokHandle, outputFileName) => {
+  downloadLatestImagesAndSaveToJson(tiktokHandle, outputFileName)
 }
 
 const args = process.argv.slice(2)
-const clientName = args[0]
-const tiktokHandle = args[1]
-const outputFileName = args[2]
+const tiktokHandle = args[0]
+const outputFileName = args[1]
 
-main(clientName, tiktokHandle, outputFileName)
+main(tiktokHandle, outputFileName)

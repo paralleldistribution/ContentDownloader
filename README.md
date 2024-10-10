@@ -1,5 +1,9 @@
 # ContentDownloader
 
+Usage: `npm run start @tiktok_handle output_file_name.json`
+
+Example: `npm run start @mentalshift.zone test.json`
+
 JavaScript tool for downloading files from Google Drive and data from AirTable.
 
 ## Google Drive integration
